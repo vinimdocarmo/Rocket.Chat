@@ -226,3 +226,20 @@ Package.onUse(function(api) {
 
 	api.imply('tap:i18n');
 });
+
+Package.onTest(function(api) {
+	api.use('ecmascript');
+	api.use('check');
+	api.use('mongo');
+	api.use('underscore');
+	api.use('rocketchat:logger');
+
+	api.addFiles('lib/core.js');
+	api.addFiles('lib/settings.js');
+
+	api.addFiles('server/models/_BaseDb.js', 'server');
+
+	api.addFiles('tests/_BaseDb.tests.js', 'server');
+
+	api.export('ModelsBaseDb', 'server');
+});

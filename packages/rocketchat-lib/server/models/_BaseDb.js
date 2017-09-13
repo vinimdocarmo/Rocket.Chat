@@ -1,4 +1,4 @@
-/* globals MongoInternals */
+/* globals MongoInternals, ModelsBaseDb */
 
 const baseName = 'rocketchat_';
 import {EventEmitter} from 'events';
@@ -17,7 +17,7 @@ RocketChat.settings.get('Force_Disable_OpLog_For_Cache', (key, value) => {
 	isOplogEnabled = isOplogAvailable && value === false;
 });
 
-class ModelsBaseDb extends EventEmitter {
+ModelsBaseDb = class ModelsBaseDb extends EventEmitter {
 	constructor(model, baseModel) {
 		super();
 
@@ -66,7 +66,7 @@ class ModelsBaseDb extends EventEmitter {
 		// 	}
 		// }
 
-		if (/(^|,)\$/.test(Object.keys(record).join(','))) {
+		if (_.keys(record).some(key => key.startsWith('$'))) {
 			record.$set = record.$set || {};
 			record.$set._updatedAt = new Date;
 		} else {
@@ -426,6 +426,6 @@ class ModelsBaseDb extends EventEmitter {
 
 		return trash.find(query, options);
 	}
-}
+};
 
 export default ModelsBaseDb;
